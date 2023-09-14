@@ -3,3 +3,6 @@ PyPDF2
 nltk
 wordcloud
 seaborn
+python-dotenv
+black
+pre-commit

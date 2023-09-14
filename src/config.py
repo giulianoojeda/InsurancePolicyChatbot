@@ -1,0 +1,18 @@
+from pathlib import Path
+import os
+from dotenv import load_dotenv
+
+# Define paths
+DATASET_ROOT_PATH = str(Path(__file__).parent.parent / "dataset")
+ENV_PATH = str(Path(__file__).parent.parent / ".env")
+
+# Define Constants
+S3_BUCKET_NAME = "anyoneai-datasets"
+S3_BUCKET_PREFIX = "queplan_insurance/"
+
+# Load .env file
+load_dotenv(dotenv_path=ENV_PATH)
+
+# Define environment variables
+AWS_ACCESS_KEY_ID = str(os.getenv("AWS_ACCESS_KEY_ID"))
+AWS_SECRET_ACCESS_KEY = str(os.getenv("AWS_SECRET_ACCESS_KEY"))
