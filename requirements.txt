@@ -6,3 +6,5 @@ seaborn
 python-dotenv
 black
 pre-commit
+pypdf
+langchain
