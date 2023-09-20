@@ -8,3 +8,7 @@ black
 pre-commit
 pypdf
 langchain
+chromadb
+tiktoken
+openai
+gensim
