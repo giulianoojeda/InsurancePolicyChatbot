@@ -5,6 +5,7 @@ wordcloud
 seaborn
 python-dotenv
 black
+black[jupyter]
 pre-commit
 pypdf
 langchain

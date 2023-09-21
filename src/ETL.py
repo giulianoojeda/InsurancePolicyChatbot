@@ -1,6 +1,10 @@
 import os
 import boto3
 import glob
+import re
+
+from typing import List
+from langchain.docstore.document import Document
 
 
 def extract_from_s3(
@@ -9,7 +13,7 @@ def extract_from_s3(
     AWS_ACCESS_KEY_ID,
     AWS_SECRET_ACCESS_KEY,
     DATASET_ROOT_PATH,
-):
+) -> None:
     """
     Extracts files from an S3 bucket and saves them to a local path.
 
@@ -70,3 +74,19 @@ def extract_from_s3(
         print(
             f"Files from {S3_BUCKET_NAME}/{S3_BUCKET_PREFIX} already downloaded to {DATASET_ROOT_PATH}."
         )
+
+
+def preprocess(documents: List[Document]) -> List[Document]:
+    """
+    This function removes all the extra spaces and new lines from the text.
+
+    Parameters:
+    - documents: List of Document objects.
+
+    Returns:
+    - documents: List of Document objects.
+
+    """
+    for page in documents:
+        page.page_content = re.sub(r"(\n\s*){2,}", "\n", page.page_content)
+    return documents
