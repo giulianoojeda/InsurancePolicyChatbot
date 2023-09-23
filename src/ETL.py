@@ -129,3 +129,21 @@ def load_documents_with_title(path: str) -> List[Document]:
         documents.extend(document)
 
     return documents
+
+
+def pretty_print_docs(docs: List[Document]) -> None:
+    """
+    Pretty prints a list of Document objects.
+
+    Parameters:
+    - docs (List[Document]): List of Document objects.
+
+    Returns:
+    - None
+    """
+
+    print(
+        f"\n{'-' * 100}\n".join(
+            [f"Document {i+1}:\n\n" + d.page_content for i, d in enumerate(docs)]
+        )
+    )
