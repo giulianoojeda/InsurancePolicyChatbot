@@ -3,4 +3,4 @@ repos:
     rev: 23.9.1
     hooks:
     -   id: black
-        language_version: python3.8  # adjust this to your preferred Python version
+        language_version: python3.10  # adjust this to your preferred Python version

@@ -14,3 +14,4 @@ tiktoken
 openai
 gensim
 lark
+ipykernel
