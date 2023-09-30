@@ -52,8 +52,9 @@ coverage.xml
 cover/
 
 # ChromaDB
-/chroma/*
-/chroma/*.sqlite3
+notebooks/chroma/*.*
+notebooks/chroma/*
+notebooks/chroma/*.sqlite3
 
 # Translations
 *.mo
