@@ -13,3 +13,6 @@ chromadb
 tiktoken
 openai
 gensim
+lark
+ipykernel
+google-search-results

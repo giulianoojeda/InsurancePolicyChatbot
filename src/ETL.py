@@ -5,6 +5,7 @@ import re
 
 from typing import List
 from langchain.docstore.document import Document
+from langchain.document_loaders import PyPDFLoader
 
 
 def extract_from_s3(
@@ -88,5 +89,61 @@ def preprocess(documents: List[Document]) -> List[Document]:
 
     """
     for page in documents:
-        page.page_content = re.sub(r"(\n\s*){2,}", "\n", page.page_content)
+        page.page_content = re.sub(r"(\n\s*){2,}", "\n\n", page.page_content)
     return documents
+
+
+from typing import List
+
+
+def load_documents_with_title(path: str) -> List[Document]:
+    """
+    Load documents from the specified path extracting the title from the first page,
+    assuming that the title is the first line of the first page.
+    Returns a list of Document objects.
+
+    Parameters:
+    - path (str): Path to the documents.
+
+    Returns:
+    - documents (List[Document]): List of Document objects.
+    """
+    documents = []
+
+    # Get the list of files in the path
+    files = glob.glob(f"{path}/*.pdf")
+
+    # Iterate over the files
+    for file in files:
+        # Load the document
+        loader = PyPDFLoader(file)
+        # Extract the document content
+        document = loader.load()
+        # apply metadata regex to the first page of the document
+        metadata_extracted = re.findall(r"^[^\n]*", document[0].page_content)
+        # apply metadata regex to each page of the document
+        for page in document:
+            page.metadata["title"] = metadata_extracted[0] if metadata_extracted else ""
+
+        # Add the document to the list
+        documents.extend(document)
+
+    return documents
+
+
+def pretty_print_docs(docs: List[Document]) -> None:
+    """
+    Pretty prints a list of Document objects.
+
+    Parameters:
+    - docs (List[Document]): List of Document objects.
+
+    Returns:
+    - None
+    """
+
+    print(
+        f"\n{'-' * 100}\n".join(
+            [f"Document {i+1}:\n\n" + d.page_content for i, d in enumerate(docs)]
+        )
+    )
