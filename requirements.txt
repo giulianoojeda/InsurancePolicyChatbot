@@ -15,3 +15,4 @@ openai
 gensim
 lark
 ipykernel
+google-api-python-client
