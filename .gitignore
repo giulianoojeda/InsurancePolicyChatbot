@@ -51,10 +51,9 @@ coverage.xml
 .pytest_cache/
 cover/
 
-# ChromaDB
-notebooks/chroma/*.*
-notebooks/chroma/*
-notebooks/chroma/*.sqlite3
+# ChromaDB all folders and subfolders called "chroma"
+chroma/
+
 
 # Translations
 *.mo

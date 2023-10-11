@@ -1,4 +1,7 @@
 # import langchain related modules
+import chromadb
+from chromadb.config import Settings
+
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.vectorstores import Chroma
 from langchain.chat_models import ChatOpenAI
@@ -30,6 +33,9 @@ class LlmAgent:
         self.vector_store = self._initialize_vector_store(
             persist_directory, self.embedding
         )
+        print(self.vector_store._persist_directory)
+        print(self.vector_store._client_settings)
+
         self.metadata_field_info = (
             self._setup_metadata_info()
         )  # TODO : Make this a parameter
@@ -65,7 +71,7 @@ class LlmAgent:
         Returns:
             str: Response
         """
-        return cls.agent_executor({"input": input})
+        return cls.agent_executor({"input": input})["output"]
 
     def _initialize_vector_store(
         cls, persist_directory: str, embedding: OpenAIEmbeddings
@@ -79,7 +85,16 @@ class LlmAgent:
         Returns:
             Chroma: Vector store
         """
-        return Chroma(persist_directory=persist_directory, embedding_function=embedding)
+        settings = Settings(
+            chroma_db_impl="sqlite",
+            persist_directory=persist_directory,
+            anonymized_telemetry=False,
+        )
+        return Chroma(
+            embedding_function=embedding,
+            client_settings=settings,
+            persist_directory=persist_directory,
+        )
 
     def _setup_metadata_info(self):
         return [
