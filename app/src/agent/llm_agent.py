@@ -33,9 +33,7 @@ class LlmAgent:
         self.vector_store = self._initialize_vector_store(
             persist_directory, self.embedding
         )
-        print(self.vector_store._persist_directory)
-        print(self.vector_store._client_settings)
-
+        print("Class has been initialized")
         self.metadata_field_info = (
             self._setup_metadata_info()
         )  # TODO : Make this a parameter
@@ -54,13 +52,40 @@ class LlmAgent:
                 description="""Util para cuando necesitas buscar en la base de datos de polizas de seguro para responder preguntas""",
             )
         ]
-        self.memory = self._setup_memory()
-        self.system_message = self._setup_system_message()
-        self.prompt = self._setup_prompt()
+        self.memory = AgentTokenBufferMemory(
+            memory_key="chat_history", llm=self.llm, max_token_limit=2500
+        )
+        self.system_message = SystemMessage(
+            content=(
+                """Eres un asistente bien informado centrado en pólizas de seguro y documentos. 
+        Utilizando el contexto proporcionado de nuestra base de datos de polizas de seguros, responde a la siguiente pregunta relacionada con seguros.
+        Asegúrate de proporcionar sólo información relevante a las pólizas de seguro y documentos y evita responder a preguntas no relacionadas con este dominio. 
+        Sientete libre de utilizar las tu herramienta de "retriever" para buscar informacion relevante y responder a la pregunta al final.
+        Solo puedes usar tu herramienta de "google_search" si te lo pide el usuario explicitamente diciendo "busca en google". No lo hagas si no te lo pide explicitamente.
+        Si no sabes la respuesta, simplemente di que no lo sabes, no intentes inventar una respuesta.
+        Mantén la respuesta lo más concisa posible.
+        
+        Dado el siguiente historial de conversación:
+        {chat_history}
+        
+        Pregunta: {input}
+        Respuesta útil:"""
+            )
+        )
+        self.prompt = OpenAIFunctionsAgent.create_prompt(
+            system_message=self.system_message,
+            extra_prompt_messages=[MessagesPlaceholder(variable_name="chat_history")],
+        )
         self.agent = OpenAIFunctionsAgent(
             llm=self.llm, tools=self.toolkit, prompt=self.prompt
         )
-        self.agent_executor = self._initialize_agent_executor()
+        self.agent_executor = AgentExecutor(
+            agent=self.agent,
+            tools=self.toolkit,
+            memory=self.memory,
+            verbose=True,
+            return_intermediate_steps=True,
+        )
 
     def query(cls, input: str) -> str:
         """Interacts with the agent to get an answer for the given query.
@@ -71,7 +96,7 @@ class LlmAgent:
         Returns:
             str: Response
         """
-        return cls.agent_executor({"input": input})["output"]
+        return cls.agent_executor({"input": input})
 
     def _initialize_vector_store(
         cls, persist_directory: str, embedding: OpenAIEmbeddings
@@ -90,6 +115,7 @@ class LlmAgent:
             persist_directory=persist_directory,
             anonymized_telemetry=False,
         )
+
         return Chroma(
             embedding_function=embedding,
             client_settings=settings,
@@ -131,43 +157,4 @@ class LlmAgent:
             document_content_description,
             self.metadata_field_info,
             verbose=True,
-        )
-
-    def _setup_memory(self):
-        return AgentTokenBufferMemory(
-            memory_key="chat_history", llm=self.llm, max_token_limit=2500
-        )
-
-    def _setup_system_message(self):
-        return SystemMessage(
-            content=(
-                """Eres un asistente bien informado centrado en pólizas de seguro y documentos. 
-        Utilizando el contexto proporcionado de nuestra base de datos de polizas de seguros, responde a la siguiente pregunta relacionada con seguros.
-        Asegúrate de proporcionar sólo información relevante a las pólizas de seguro y documentos y evita responder a preguntas no relacionadas con este dominio. 
-        Sientete libre de utilizar las tu herramienta de "retriever" para buscar informacion relevante y responder a la pregunta al final.
-        Solo puedes usar tu herramienta de "google_search" si te lo pide el usuario explicitamente diciendo "busca en google". No lo hagas si no te lo pide explicitamente.
-        Si no sabes la respuesta, simplemente di que no lo sabes, no intentes inventar una respuesta.
-        Mantén la respuesta lo más concisa posible.
-        
-        Dado el siguiente historial de conversación:
-        {chat_history}
-        
-        Pregunta: {input}
-        Respuesta útil:"""
-            )
-        )
-
-    def _setup_prompt(self):
-        return OpenAIFunctionsAgent.create_prompt(
-            system_message=self.system_message,
-            extra_prompt_messages=[MessagesPlaceholder(variable_name="chat_history")],
-        )
-
-    def _initialize_agent_executor(self):
-        return AgentExecutor(
-            agent=self.agent,
-            tools=self.toolkit,
-            memory=self.memory,
-            verbose=True,
-            return_intermediate_steps=True,
         )
