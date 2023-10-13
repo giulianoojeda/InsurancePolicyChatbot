@@ -75,9 +75,8 @@ docker-compose up
 ```
 
 ### Deploy App on Streamlit Public Cloud
-Deploy the app on Streamlit Public Cloud using your GitHub repository.
+Deploy the app on Streamlit Public Cloud using your GitHub repository. Tutorial [here](https://docs.streamlit.io/en/stable/deploy_streamlit_app.html#deploy-your-app-to-streamlit-sharing).
 
-[Deployed App Link](#) *(Replace '#' with your actual deployment link)*
 
 ## DISCLAIMER
 When integrating with the `openai` API, you may incur charges based on usage. Ensure you're aware of any associated costs when deploying or testing extensively.
