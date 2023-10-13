@@ -1,0 +1,10 @@
+version: "3"
+services:
+  policy-pro-app:
+    image: policy-pro-chat-app:latest
+    build: ./demo_app
+    command: streamlit run demo_app/main.py --server.port 8080
+    volumes:
+      - ./demo_app/:/app/demo_app
+    ports:
+      - 8080:8080

@@ -1,0 +1,10 @@
+langchain
+chromadb==0.3.29
+openai
+google-api-python-client
+streamlit
+python-dotenv
+lark
+tiktoken
+black
+pre-commit
