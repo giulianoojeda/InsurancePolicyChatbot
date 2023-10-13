@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 DATASET_ROOT_PATH = str(Path(__file__).parent.parent / "dataset")
 ENV_PATH = str(Path(__file__).parent.parent / ".env")
 CHROMA_PATH = str(Path(__file__).parent.parent / "chroma")
+LOGO = str(Path(__file__).parent.parent / "assets/logo.png")
 
 # Define Constants
 S3_BUCKET_NAME = "anyoneai-datasets"
