@@ -27,16 +27,16 @@ The code is organized into two main sections:
 
 ## Configuration
 
-The application can be configured using the `.env` file. The following variables are available:
+The application can be configured using the `.env` file located in `demo_app/.env`.  The following variables are available:
 
-AWS_ACCESS_KEY_ID - AWS Access Key ID (Example: my-access-key-id)
-AWS_SECRET_ACCESS_KEY - AWS Secret Access Key (Example: my-secret-access-key)
-OPENAI_API_KEY - OpenAI API Key (Example: my-openai-api-key)
-TEMPERATURE - Sets temperature in OpenAI (Default: 0)
-SMART_LLM_MODEL - Smart language model (Default: gpt-4)
-FAST_LLM_MODEL - Fast language model (Default: gpt-3.5-turbo)
-GOOGLE_API_KEY - Google API key (Example: my-google-api-key)
-CUSTOM_SEARCH_ENGINE_ID - Custom search engine ID (Example: my-custom-search-engine-id)
+- `AWS_ACCESS_KEY_ID` - AWS Access Key ID (Example: my-access-key-id)
+- `AWS_SECRET_ACCESS_KEY` - AWS Secret Access Key (Example: my-secret-access-key)
+- `OPENAI_API_KEY` - OpenAI API Key (Example: my-openai-api-key)
+- `TEMPERATURE` - Sets temperature in OpenAI (Default: 0)
+- `SMART_LLM_MODEL` - Smart language model (Default: gpt-4)
+- `FAST_LLM_MODEL` - Fast language model (Default: gpt-3.5-turbo)
+- `GOOGLE_API_KEY` - Google API key (Example: my-google-api-key)
+- `CUSTOM_SEARCH_ENGINE_ID` - Custom search engine ID (Example: my-custom-search-engine-id)
 
 ## 💻 Running Locally
 
