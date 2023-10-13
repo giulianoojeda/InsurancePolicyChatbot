@@ -66,7 +66,7 @@ docker  build . -t policypro-insurance-agent:latest
 
 - Run the Docker container:
 ```bash
-docker run -d --name policypro-insurance-agent -p 8080:8080 policypro-insurance-agent
+docker run -d --name policypro-insurance-agent -p 3000:3000 policypro-insurance-agent
 ```
 
 or using docker-compose:

@@ -1,10 +1,10 @@
 version: "3"
 services:
-  policy-pro-app:
+  policypro-insurance-agent:
     image: policypro-insurance-agent:latest
     build: ./demo_app
-    command: streamlit run demo_app/main.py --server.port 8080
+    command: streamlit run demo_app/main.py --server.port 8501
     volumes:
       - ./demo_app/:/app/demo_app
     ports:
-      - 8080:8080
+      - 8501:8501
